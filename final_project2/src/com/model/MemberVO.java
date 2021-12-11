@@ -3,13 +3,7 @@ package com.model;
 import java.util.Date;
 
 public class MemberVO {
-	// 수고요
-	// ㅋㅋㅋㅋㅋ
-	//ㄴㅇㄹㄴㅇㄹ 
-	// ㅋㅋㅋㅋ
-	// ㅉㅉ ㅜㅜㅜ
-	// ㅁㄴㅇㄹㄴㅇㄹㄴㄹㅇ
-	// 망했으요
+
 	private String m_id;
 	private String m_pwd;
 	private String m_gender;
