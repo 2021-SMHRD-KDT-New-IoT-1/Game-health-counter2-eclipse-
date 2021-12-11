@@ -13,9 +13,10 @@ public class MemberDAO {
 	int cnt;
 	MemberVO member_vo;
 	
-	public String login(String id, String pwd) {
+	public MemberVO login(String id, String pwd) {
 		try {
 			connection();
+			System.out.println("DB 연결 성공");
 
 			String sql = "select * from t_member where m_id=? and m_pwd=?";
 
@@ -27,7 +28,7 @@ public class MemberDAO {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				System.out.println("로그인 성공!");
+				System.out.println("로그인 성공");
 
 				String m_id= rs.getString("m_id"); 
 				String m_pwd= rs.getString("m_pwd");
@@ -43,10 +44,8 @@ public class MemberDAO {
 				member_vo = new MemberVO(m_id, m_pwd, m_gender, m_name, 
 						m_nickname, m_email, m_phone, m_push_yn, m_joindate, admin_yn);
 				
-				return member_vo.getM_nickname();
 			} else {
 				System.out.println("로그인 실패(select했는데 없음)");
-				return "";
 			}
 
 		} catch (Exception e) {
@@ -56,7 +55,7 @@ public class MemberDAO {
 		} finally {
 			close();
 		}
-		return "";
+		return member_vo;
 	}
 	
 	
