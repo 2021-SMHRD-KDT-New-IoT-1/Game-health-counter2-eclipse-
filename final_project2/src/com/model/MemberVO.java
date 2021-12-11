@@ -6,6 +6,7 @@ public class MemberVO {
 	// 熱堅蹂
 	// 六六六六六
 	//中仄予中仄予 
+	// 六六六六
 	
 	private String m_id;
 	private String m_pwd;
