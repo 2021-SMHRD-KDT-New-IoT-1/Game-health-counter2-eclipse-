@@ -8,6 +8,7 @@ public class MemberVO {
 	//いしぉいしぉ 
 	// せせせせ
 	// すす ぬぬぬ
+	// けいしぉいしぉいぉし
 	private String m_id;
 	private String m_pwd;
 	private String m_gender;
