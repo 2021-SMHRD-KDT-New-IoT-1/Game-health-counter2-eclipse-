@@ -7,7 +7,7 @@ public class MemberVO {
 	// せせせせせ
 	//いしぉいしぉ 
 	// せせせせ
-	
+	// すす ぬぬぬ
 	private String m_id;
 	private String m_pwd;
 	private String m_gender;
