@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.model.CharVO;
 import com.model.MemberDAO;
 import com.model.MemberVO;
@@ -40,11 +41,14 @@ public class Login extends HttpServlet {
 			
 			
 			// 안드에 쏴주기
-			String json = new Gson().toJson(char_vo);
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create(); //  DateFormat변경후 생성
+			String json = gson.toJson(char_vo);
+			System.out.println("json 객체 = "+json);
 			
 			response.setContentType("application/json");
 		    response.setCharacterEncoding("UTF-8");
 		    response.getWriter().write(json);
+		    
 			
 //			PrintWriter out = response.getWriter();
 //			out.print(result);
