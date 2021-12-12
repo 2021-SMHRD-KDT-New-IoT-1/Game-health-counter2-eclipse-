@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.model.CharVO;
 import com.model.MemberDAO;
 import com.model.MemberVO;
 
@@ -22,25 +23,31 @@ public class Login extends HttpServlet {
 		System.out.println();
 		System.out.println("서버진입");
 		
-		request.setCharacterEncoding("euc-kr");
+		request.setCharacterEncoding("utf-8");
 		
 		String id = request.getParameter("m_id");
 		String pwd = request.getParameter("m_pwd");
 		
 		System.out.println("id = "+id+", pwd = "+pwd);
 		
-		MemberDAO member_dao = new MemberDAO();
-		MemberVO member_vo = member_dao.login(id, pwd);
+		CharVO char_vo = new MemberDAO().login(id, pwd);
 		
 		
 		try {
-			String result = member_vo.getM_nickname();
+//			String result = member_vo.getM_nickname();
 			
-			System.out.println("nickname = "+result);
+//			System.out.println("nickname = "+result);
+			
 			
 			// 안드에 쏴주기
-			PrintWriter out = response.getWriter();
-			out.print(result);
+			String json = new Gson().toJson(char_vo);
+			
+			response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+		    response.getWriter().write(json);
+			
+//			PrintWriter out = response.getWriter();
+//			out.print(result);
 			
 		} catch (NullPointerException e) {
 			System.out.println("객체 = null");

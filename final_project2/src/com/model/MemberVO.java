@@ -116,9 +116,5 @@ public class MemberVO {
 				+ ", m_nickname=" + m_nickname + ", m_email=" + m_email + ", m_phone=" + m_phone + ", m_push_yn="
 				+ m_push_yn + ", m_joindate=" + m_joindate + ", admin_yn=" + admin_yn + "]";
 	}
-	
-	
-	
-	
 
 }

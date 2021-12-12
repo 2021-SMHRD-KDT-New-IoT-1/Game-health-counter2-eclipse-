@@ -12,12 +12,14 @@ public class MemberDAO {
 	ResultSet rs = null;
 	int cnt;
 	MemberVO member_vo;
+	CharVO char_vo;
 	
-	public MemberVO login(String id, String pwd) {
+	public CharVO login(String id, String pwd) {
 		try {
 			connection();
 			System.out.println("DB 연결 성공");
 
+			// 회원 로그인
 			String sql = "select * from t_member where m_id=? and m_pwd=?";
 
 			pst = conn.prepareStatement(sql);
@@ -26,9 +28,8 @@ public class MemberDAO {
 			pst.setString(2, pwd);
 
 			rs = pst.executeQuery();
-
+			
 			if (rs.next()) {
-				System.out.println("로그인 성공");
 
 				String m_id= rs.getString("m_id"); 
 				String m_pwd= rs.getString("m_pwd");
@@ -44,6 +45,35 @@ public class MemberDAO {
 				member_vo = new MemberVO(m_id, m_pwd, m_gender, m_name, 
 						m_nickname, m_email, m_phone, m_push_yn, m_joindate, admin_yn);
 				
+				if(member_vo != null) {
+					
+					// 회원 로그인 성공시, 회원 ID에 맞는 캐릭터 찾기
+					sql = "SELECT * FROM t_character WHERE m_id =?";
+
+					pst = conn.prepareStatement(sql);
+
+					pst.setString(1, id);
+
+					rs = pst.executeQuery();
+
+					if (rs.next()) {
+						System.out.println("로그인 성공");
+
+						int c_seq= rs.getInt("c_seq"); 
+						String c_name= rs.getString("c_name");
+						String c_memo = rs.getString("c_memo");
+						Date reg_date = rs.getDate("reg_date");
+//						String m_id = rs.getString("m_id");
+						int c_level = rs.getInt("c_level");
+						String c_file = rs.getString("c_file");
+
+						char_vo = new CharVO(c_seq, c_name, c_memo, reg_date, m_id, c_level, c_file);
+						
+					} else {
+						System.out.println("로그인 실패(select했는데 없음)");
+					}
+				}
+				
 			} else {
 				System.out.println("로그인 실패(select했는데 없음)");
 			}
@@ -55,7 +85,7 @@ public class MemberDAO {
 		} finally {
 			close();
 		}
-		return member_vo;
+		return char_vo;
 	}
 	
 	
@@ -87,9 +117,12 @@ public class MemberDAO {
 			// 1. 드라이버 동적 로딩
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
-			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-			String user = "campus_a_5_1025";
-			String password = "smhrd5";
+//			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+//			String user = "campus_a_5_1025";
+//			String password = "smhrd5";
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			String user = "hr";
+			String password = "hr";
 			// 2. 데이터 베이스 연결 객채(Connection) 생성
 			conn = DriverManager.getConnection(url, user, password);
 		} catch (Exception e) {
