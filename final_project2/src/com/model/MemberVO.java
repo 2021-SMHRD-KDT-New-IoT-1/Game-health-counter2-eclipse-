@@ -15,8 +15,26 @@ public class MemberVO {
 	private Date m_joindate;
 	private String admin_yn;
 	
+	// 처음 회원가입할 때
+	public MemberVO(String m_id, String m_pwd, String m_gender, String m_name, String m_nickname, String m_email,
+			String m_phone, String m_push_yn, String admin_yn) {
+		// joindate 없음.
+		super();
+		this.m_id = m_id;
+		this.m_pwd = m_pwd;
+		this.m_gender = m_gender;
+		this.m_name = m_name;
+		this.m_nickname = m_nickname;
+		this.m_email = m_email;
+		this.m_phone = m_phone;
+		this.m_push_yn = m_push_yn;
+		this.admin_yn = admin_yn;
+	}
+	
+	// 회원정보 불러올 때
 	public MemberVO(String m_id, String m_pwd, String m_gender, String m_name, String m_nickname, String m_email,
 			String m_phone, String m_push_yn, Date m_joindate, String admin_yn) {
+		// joindate있음
 		super();
 		this.m_id = m_id;
 		this.m_pwd = m_pwd;
@@ -29,10 +47,13 @@ public class MemberVO {
 		this.m_joindate = m_joindate;
 		this.admin_yn = admin_yn;
 	}
+	
 
 	public String getM_id() {
 		return m_id;
 	}
+
+
 
 	public void setM_id(String m_id) {
 		this.m_id = m_id;

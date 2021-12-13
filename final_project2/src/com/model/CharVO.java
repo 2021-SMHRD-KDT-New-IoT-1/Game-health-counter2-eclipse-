@@ -6,8 +6,8 @@ public class CharVO {
 	 // 캐릭터 순번 
     private int c_seq;
 
-    // 캐릭터 이름 
-    private String c_name;
+//    // 캐릭터 이름 
+//    private String c_name; //사용안함.
 
     // 캐릭터 메모 
     private String c_memo;
@@ -22,34 +22,29 @@ public class CharVO {
     private int c_level;
 
     // 캐릭터 경로 
-    private String c_file;
+    private String c_file; //안드에서 지정해줘야함.
 
-	public CharVO(int c_seq, String c_name, String c_memo, Date reg_date, String m_id, int c_level, String c_file) {
+
+    //캐릭터 정보 뽑아올 때 (시퀀스, 메모, 아이디, 레벨)
+    public CharVO(int c_seq, String c_memo, String m_id, int c_level) {
 		super();
 		this.c_seq = c_seq;
-		this.c_name = c_name;
 		this.c_memo = c_memo;
-		this.reg_date = reg_date;
 		this.m_id = m_id;
 		this.c_level = c_level;
-		this.c_file = c_file;
 	}
+
+
 
 	public int getC_seq() {
 		return c_seq;
 	}
 
+
 	public void setC_seq(int c_seq) {
 		this.c_seq = c_seq;
 	}
 
-	public String getC_name() {
-		return c_name;
-	}
-
-	public void setC_name(String c_name) {
-		this.c_name = c_name;
-	}
 
 	public String getC_memo() {
 		return c_memo;
