@@ -16,7 +16,7 @@ public class CharDAO {
 	public int CharCreat(String m_id) {
 				try {
 					connection();
-					String sql = "insert into t_character values(T_CHARACTER_SEQ.nextval,'memo',TO_DATE(SYSDATE),?,1,0)";
+					String sql = "insert into t_character values(T_CHARACTER_SEQ.nextval,'',?,1,0)";
 					pst= conn.prepareStatement(sql);
 					
 					pst.setString(1, m_id);
