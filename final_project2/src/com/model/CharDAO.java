@@ -16,7 +16,7 @@ public class CharDAO {
 	public int CharCreat(String m_id) {
 				try {
 					connection();
-					String sql = "insert into t_character values(T_CHARACTER_SEQ.nextval,'charname','memo',TO_DATE(SYSDATE),?,1,'경로')";
+					String sql = "insert into t_character values(T_CHARACTER_SEQ.nextval,'memo',TO_DATE(SYSDATE),?,1,0)";
 					pst= conn.prepareStatement(sql);
 					
 					pst.setString(1, m_id);
@@ -134,18 +134,16 @@ public class CharDAO {
 			// 1. 드라이버 동적 로딩
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
-			//		String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-			//		String user = "campus_a_5_1025";
-			//		String password = "smhrd5";
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			String user = "hr";
-			String password = "hr";
+			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+			String user = "campus_a_1_1214";
+			String password = "smhrd1";
 			// 2. 데이터 베이스 연결 객채(Connection) 생성
 			conn = DriverManager.getConnection(url, user, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("연결실패");
 		}
+
 	}
 
 	public void close() {

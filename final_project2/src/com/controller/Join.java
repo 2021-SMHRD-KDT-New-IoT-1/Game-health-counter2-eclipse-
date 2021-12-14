@@ -39,9 +39,9 @@ public class Join extends HttpServlet {
 
 		// 여기서도 joindate는 받지 않음. joindate는 db에 insert할 때 sysdate로 들어간다.
 
-		if (m_id.equals("이것이관리자아이디다")) {
-			admin_yn = "Y";
-		}
+//		if (m_id.equals("이것이관리자아이디다")) {
+//			admin_yn = "Y";
+//		}
 
 		int cnt_join = new MemberDAO().join(m_id, m_pwd, m_gender, m_name, m_nickname, m_email, m_phone, m_push_yn,
 				admin_yn);

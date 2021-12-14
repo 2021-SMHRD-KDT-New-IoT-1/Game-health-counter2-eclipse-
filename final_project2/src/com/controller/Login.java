@@ -25,7 +25,7 @@ public class Login extends HttpServlet {
 	
 		System.out.println("서버진입");
 		
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("euc-kr");
 		
 		String id = request.getParameter("m_id");
 		String pwd = request.getParameter("m_pwd");
@@ -48,13 +48,6 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-		
-
-		
-		
-		
-		
-		
 		
 		//		try {
 ////			String result = member_vo.getM_nickname();

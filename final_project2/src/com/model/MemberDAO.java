@@ -38,6 +38,7 @@ public class MemberDAO {
 			
 			if (rs.next()) {
 				// 로그인시 안드에서 필요한 정보  // 얘를 리턴할 것임.
+				System.out.println("조회 성공");
 				m_id = rs.getString("m_id");
 				
 				return m_id;
@@ -62,7 +63,7 @@ public class MemberDAO {
 			try {
 				connection();
 				
-				String sql = "insert into values(?,?,?,?,?,?,?,?,TO_DATE(SYSDATE),?)";
+				String sql = "insert into t_member values(?,?,?,?,?,?,?,?,TO_DATE(SYSDATE),?)";
 				pst= conn.prepareStatement(sql);
 				
 				pst.setString(1, m_id);
@@ -179,12 +180,9 @@ public class MemberDAO {
 			// 1. 드라이버 동적 로딩
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
-//			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
-//			String user = "campus_a_5_1025";
-//			String password = "smhrd5";
-			String url = "jdbc:oracle:thin:@localhost:1521:xe";
-			String user = "hr";
-			String password = "hr";
+			String url = "jdbc:oracle:thin:@project-db-stu.ddns.net:1524:xe";
+			String user = "campus_a_1_1214";
+			String password = "smhrd1";
 			// 2. 데이터 베이스 연결 객채(Connection) 생성
 			conn = DriverManager.getConnection(url, user, password);
 		} catch (Exception e) {
