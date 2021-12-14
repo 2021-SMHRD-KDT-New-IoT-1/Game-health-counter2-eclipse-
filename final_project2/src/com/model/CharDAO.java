@@ -75,7 +75,7 @@ public class CharDAO {
 	
 	
 	
-	// 캐릭터 Exp 불러오기
+	// 캐릭터 누적 Exp 불러오기
 	public int CharExp(String m_id) {
 		int c_exp = -1;
 		
@@ -83,8 +83,8 @@ public class CharDAO {
 			connection();
 			System.out.println("DB 연결 성공");
 
-			// 회원 로그인
-			String sql = "select c_level from t_character where m_id=?";
+			
+			String sql = "";
 			 
 			pst = conn.prepareStatement(sql);
 
@@ -93,19 +93,28 @@ public class CharDAO {
 			rs = pst.executeQuery();
 			
 			if (rs.next()) {
-				c_exp = rs.getInt("c_level");
+				c_exp = rs.getInt("c_exp");
 			
 			}else {
-				System.out.println("level 조회실패");
+				System.out.println("exp 조회실패");
 			}
 		}catch (Exception e) {
-				System.out.println("로그인 실패(예외 발생)");
+				System.out.println("exp 조회실패(예외 발생)");
 				e.printStackTrace();
 			} finally {
 				close();
 			}
 		return c_exp;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
