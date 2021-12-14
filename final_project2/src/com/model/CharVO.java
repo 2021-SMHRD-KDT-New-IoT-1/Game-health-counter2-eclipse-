@@ -26,14 +26,12 @@ public class CharVO {
 
 
     //캐릭터 정보 뽑아올 때 (시퀀스, 메모, 아이디, 레벨)
-    public CharVO(int c_seq, String c_memo, String m_id, int c_level) {
+    public CharVO(int c_seq, String m_id, int c_level) {
 		super();
 		this.c_seq = c_seq;
-		this.c_memo = c_memo;
 		this.m_id = m_id;
 		this.c_level = c_level;
 	}
-
 
 
 	public int getC_seq() {

@@ -17,7 +17,8 @@ import com.model.MemberVO;
 
 @WebServlet("/Login")
 public class Login extends HttpServlet {
-	
+	// 로그인 성공시 안드로이드에게
+	// "성공"을 리턴한다.
 	
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,20 +34,20 @@ public class Login extends HttpServlet {
 		
 		String m_id = new MemberDAO().login(id, pwd);
 
-		if(!m_id.equals("로그인실패")) {
-		
-		System.out.println("조회 후 가지고 온 nickname : "+ m_id);
+		if(!m_id.equals("")) {
+		System.out.println("조회 후 가지고 온 id : "+ m_id);
+		//로그인성공했을때 조건문이니까 성공 보내기~
 		try {
 			response.setContentType("application/json");
 		    response.setCharacterEncoding("UTF-8");
 		    
 			PrintWriter out = response.getWriter();
-			out.print(m_id); //nickname을 서버로 보낸다.
+			out.print("성공"); //id를 서버로 보낸다.
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		}
+	}
 		
 
 		

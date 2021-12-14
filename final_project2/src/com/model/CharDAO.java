@@ -14,15 +14,12 @@ public class CharDAO {
 	
 	// 회원가입시 무조건 캐릭터 생성
 	public int CharCreat(String m_id) {
-		int level = 1; // 회원가입시 처음 부여되는 레벨
 				try {
 					connection();
-					
-					String sql = "insert into t_character values(T_CHARACTER_SEQ.nextval,'-','-',TO_DATE(SYSDATE),?,?,'-')";
+					String sql = "insert into t_character values(T_CHARACTER_SEQ.nextval,'charname','memo',TO_DATE(SYSDATE),?,1,'경로')";
 					pst= conn.prepareStatement(sql);
 					
 					pst.setString(1, m_id);
-					pst.setInt(2, level);
 					
 					cnt = pst.executeUpdate();
 					
@@ -44,7 +41,7 @@ public class CharDAO {
 	
 	
 	
-	// 캐릭터 lv 불러오기
+	// 캐릭터 level 불러오기
 	public int CharLv(String m_id) {
 		int c_level = -1;
 		

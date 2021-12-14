@@ -21,7 +21,7 @@ public class MemberDAO {
 	CharVO char_vo;
 	
 	public String login(String id, String pwd) {
-		String m_id = "로그인실패";
+		String m_id = "";
 		try {
 			connection();
 			System.out.println("DB 연결 성공");

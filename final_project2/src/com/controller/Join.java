@@ -12,20 +12,22 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.model.CharDAO;
 import com.model.MemberDAO;
 import com.model.MemberVO;
 
-
 @WebServlet("/Join")
 public class Join extends HttpServlet {
+	// 이 페이지에서 회원가입 성공시 캐릭터 생성까지 하고 
+	// "성공"을 리턴한다.
 
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		request.setCharacterEncoding("utf-8");
-		
+
 		String admin_yn = "N";
-		
-		
+
 		String m_id = request.getParameter("m_id");
 		String m_pwd = request.getParameter("m_pwd");
 		String m_gender = request.getParameter("m_gender");
@@ -35,39 +37,40 @@ public class Join extends HttpServlet {
 		String m_phone = request.getParameter("m_phone");
 		String m_push_yn = request.getParameter("m_push_yn");
 
-		
 		// 여기서도 joindate는 받지 않음. joindate는 db에 insert할 때 sysdate로 들어간다.
-	
-		if(m_id.equals("이것이관리자아이디다")) {
+
+		if (m_id.equals("이것이관리자아이디다")) {
 			admin_yn = "Y";
 		}
 
-		
-		int cnt = new MemberDAO().join(m_id, m_pwd, m_gender, m_name, m_nickname, m_email, m_phone, m_push_yn, admin_yn);
-		
+		int cnt_join = new MemberDAO().join(m_id, m_pwd, m_gender, m_name, m_nickname, m_email, m_phone, m_push_yn,
+				admin_yn);
 
-		
-	
 		try {
 			response.setContentType("application/json");
-		    response.setCharacterEncoding("UTF-8");
-		    
+			response.setCharacterEncoding("UTF-8");
+
 			PrintWriter out = response.getWriter();
-			
-			if(cnt>0) {
-			
-			response.setContentType("application/json");
-		    response.setCharacterEncoding("UTF-8");
-			out.print("회원가입성공"); //회원가입성공을 서버로 보낸다.
-		   
-			}else {
-				out.print("회원가입실패");
+
+			if (cnt_join > 0) {
+				System.out.println("서블릿: 회원가입성공");
+
+				int cnt_charCreate = new CharDAO().CharCreat(m_id);
+				
+				if (cnt_charCreate > 0) { //이 if문은 회원가입과 캐릭터생성 둘 다 성공했을 때 들어오는 if문
+
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					out.print("성공"); // 성공 리턴
+				}
 			}
-			
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		
 		
 		
 	}
 }
+
