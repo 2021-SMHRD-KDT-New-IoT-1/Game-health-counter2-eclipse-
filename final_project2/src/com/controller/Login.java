@@ -25,7 +25,7 @@ public class Login extends HttpServlet {
 	
 		System.out.println("서버진입");
 		
-		request.setCharacterEncoding("euc-kr");
+		request.setCharacterEncoding("UTF-8");
 		
 		String id = request.getParameter("m_id");
 		String pwd = request.getParameter("m_pwd");
@@ -38,8 +38,7 @@ public class Login extends HttpServlet {
 		System.out.println("조회 후 가지고 온 id : "+ m_id);
 		//로그인성공했을때 조건문이니까 성공 보내기~
 		try {
-			response.setContentType("application/json");
-		    response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
 		    
 			PrintWriter out = response.getWriter();
 			out.print("성공"); //id를 서버로 보낸다.

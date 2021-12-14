@@ -24,13 +24,26 @@ public class Join extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("UTF-8");
 
 		String admin_yn = "N";
 
 		String m_id = request.getParameter("m_id");
 		String m_pwd = request.getParameter("m_pwd");
+		
+		
 		String m_gender = request.getParameter("m_gender");
+		
+		if(m_gender != null) {
+			if(m_gender.equals("남자")) {
+				m_gender = "M";
+			} else {
+				m_gender = "F";
+			}
+		}
+		
+		
+		System.out.println(m_gender);
 		String m_name = request.getParameter("m_name");
 		String m_nickname = request.getParameter("m_nickname");
 		String m_email = request.getParameter("m_email");
@@ -47,8 +60,7 @@ public class Join extends HttpServlet {
 				admin_yn);
 
 		try {
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
 
 			PrintWriter out = response.getWriter();
 
@@ -58,9 +70,6 @@ public class Join extends HttpServlet {
 				int cnt_charCreate = new CharDAO().CharCreat(m_id);
 				
 				if (cnt_charCreate > 0) { //이 if문은 회원가입과 캐릭터생성 둘 다 성공했을 때 들어오는 if문
-
-					response.setContentType("application/json");
-					response.setCharacterEncoding("UTF-8");
 					out.print("성공"); // 성공 리턴
 				}
 			}
