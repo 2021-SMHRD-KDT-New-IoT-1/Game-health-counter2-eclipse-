@@ -28,71 +28,71 @@ public class MemberDAO {
 
 			// 회원 로그인
 			String sql = "select * from t_member where m_id=? and m_pwd=?";
-			 
+
 			pst = conn.prepareStatement(sql);
 
 			pst.setString(1, id);
 			pst.setString(2, pwd);
 
 			rs = pst.executeQuery();
-			
+
 			if (rs.next()) {
-				// 로그인시 안드에서 필요한 정보  // 얘를 리턴할 것임.
+				// 로그인시 안드에서 필요한 정보 // 얘를 리턴할 것임.
 				System.out.println("조회 성공");
 				m_id = rs.getString("m_id");
-				
+
 				return m_id;
-			
-			}else {
+
+			} else {
 				System.out.println("로그인실패(로그인조회실패)");
 			}
-		}catch (Exception e) {
-				System.out.println("로그인 실패(예외 발생)");
-				e.printStackTrace();
-			} finally {
-				close();
-			}
-		return m_id;
+		} catch (Exception e) {
+			System.out.println("로그인 실패(예외 발생)");
+			e.printStackTrace();
+		} finally {
+			close();
 		}
+		return m_id;
+	}
 	
 	
 	// 회원가입 메서드(MemberVO 리턴, 서블릿에서 안드에서 필요한 정보만 뽑아서 사용)
 	public int join(String m_id, String m_pwd, String m_gender, String m_name, String m_nickname, String m_email,
 			String m_phone, String m_push_yn, String admin_yn) {
 		// joindate는 어차피 sysdate로 처리할 거니까 매개변수에서 뺐습니다.
-			try {
-				connection();
-				
-				String sql = "insert into t_member values(?,?,?,?,?,?,?,?,TO_DATE(SYSDATE),?)";
-				pst= conn.prepareStatement(sql);
-				
-				pst.setString(1, m_id);
-				pst.setString(2, m_pwd);
-				pst.setString(3, m_gender);
-				pst.setString(4, m_name);
-				pst.setString(5, m_nickname);
-				pst.setString(6, m_email);
-				pst.setString(7, m_phone);
-				pst.setString(8, m_push_yn);
-				pst.setString(9, admin_yn);
-				
-				cnt = pst.executeUpdate();
-				
-				if(cnt>0) {
-					System.out.println("회원가입성공");
-				}else {
-					System.out.println("회원가입실패(insert실패)");
-				}
-				
-			}catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("회원가입실패(예외사항)");
-			}finally {
-				close();
-				
+		try {
+			connection();
+
+			String sql = "insert into t_member values(?,?,?,?,?,?,?,?,TO_DATE(SYSDATE),?)";
+			pst = conn.prepareStatement(sql);
+
+			pst.setString(1, m_id);
+			pst.setString(2, m_pwd);
+			pst.setString(3, m_gender);
+			pst.setString(4, m_name);
+			pst.setString(5, m_nickname);
+			pst.setString(6, m_email);
+			pst.setString(7, m_phone);
+			pst.setString(8, m_push_yn);
+			pst.setString(9, admin_yn);
+
+			cnt = pst.executeUpdate();
+
+			if (cnt > 0) {
+				System.out.println("회원가입성공");
+			} else {
+				System.out.println("회원가입실패(insert실패)");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("회원가입실패(예외사항)");
+		} finally {
+			close();
+
 		}
-			return cnt;
-		}
+		return cnt;
+	}
 	
 	
 	
