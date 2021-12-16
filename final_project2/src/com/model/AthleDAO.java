@@ -10,6 +10,7 @@ public class AthleDAO {
 	PreparedStatement pst = null;
 	ResultSet rs = null;
 	
+	// 운동  기록 조회
 	public String look(String date, String id) {
 		
 		int push_cnt = 0;
@@ -49,6 +50,56 @@ public class AthleDAO {
 		}
 		return push_cnt+","+pull_cnt+","+sqt_cnt;
 	}
+	
+	
+	// 타임 어택 모드 기록 조회
+	public int time_look(String date, String id, String mode) {
+		
+		int time_cnt = 0;
+		
+		try {
+			connection();
+			System.out.println("DB 연결 성공");
+
+			// 타임 어택 모드 기록 조회
+			String sql = "select adate, max(timeattack_rec) as TIME_REC from (select to_char(reg_date,'yyyymmdd') as adate, timeattack_rec from t_athletic where m_id=? AND to_char(reg_date,'yyyymmdd')=? AND time_mode =?) group by adate";
+
+			pst = conn.prepareStatement(sql);
+
+			pst.setString(1, id);
+			pst.setString(2, date);
+			pst.setString(3, mode);
+
+			rs = pst.executeQuery();
+
+			if (rs.next()) {
+				System.out.println("타임 어택 모드 기록 조회 성공");
+				
+				time_cnt = rs.getInt("TIME_REC");
+
+			} else {
+				System.out.println("타임 어택 모드 기록 조회 실패");
+			}
+		} catch (Exception e) {
+			System.out.println("타임 어택 모드 기록 조회 실패(예외 발생)");
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return time_cnt;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
