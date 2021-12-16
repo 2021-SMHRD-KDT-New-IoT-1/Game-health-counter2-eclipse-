@@ -21,7 +21,6 @@ public class AthleDAO {
 			System.out.println("DB 연결 성공");
 
 			// 운동  기록 조회
-//			String sql = "select * from t_athletic where to_char(reg_date,'yyyymmdd')=? AND m_id=?";
 			String sql = "select sum(pushup_cnt) as PUSH, sum(pullup_cnt) as PULL, sum(squat_cnt) as SQUART"
 					+ " from t_athletic where to_char(reg_date,'yyyymmdd')=? AND m_id=?";
 
