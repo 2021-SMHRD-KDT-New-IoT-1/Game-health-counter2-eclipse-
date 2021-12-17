@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
 public class RaidDAO {
 	Connection conn = null;
 	PreparedStatement pst = null;
@@ -17,10 +20,10 @@ public class RaidDAO {
 	ArrayList<RaidVO> raidVO_al = new ArrayList<RaidVO>();
 	
 	
-	public ArrayList<RaidVO> raidInfo() { // 레이드버튼 눌렀을 때 레이드화면 정보
+	public JsonArray raidInfo(String id) { // 레이드버튼 눌렀을 때 레이드화면 정보
 		// 여기서 레이드 세개 다 가져온 다음에
 		// 안드에서 참가중인지 아닌지 알려주기.
-		
+		JsonArray arr = new JsonArray();
 		try {
 			connection();
 
@@ -34,11 +37,15 @@ public class RaidDAO {
 					String raid_seq = rs.getString("raid_seq");
 					String raid_kind = rs.getString("raid_kind");
 					String raid_name = rs.getString("raid_name");
-					String raid_cnt = rs.getString("raid_cnt");
+					String raid_cnt = rs.getString("raid_mission");
 					Date reg_date = rs.getDate("reg_date");
 				
 					RaidVO raid_vo = new RaidVO(raid_seq, raid_kind, raid_name, raid_cnt, reg_date);
-					raidVO_al.add(raid_vo);
+//					raidVO_al.add(raid_vo);
+					String json = new Gson().toJson(raid_vo);
+	
+					arr.add(json);
+					    
 					
 					// 참가중인 레이드 알려주기
 					// 참가하기 누르면 참가중으로 바뀌고 다시 그 화면 갔을 때 참가중인 거는 유지가 되어야 한다.
@@ -48,12 +55,12 @@ public class RaidDAO {
 					}
 				
 		}catch (Exception e) {
-				System.out.println("DAO의 getRaidInfo() 실패(예외발생)");
+				System.out.println("DAO의 raidInfo() 실패(예외발생)");
 				e.printStackTrace();
 			} finally {
 				close();
 			}
-		return raidVO_al;
+		return arr;
 	}
 	
 	
