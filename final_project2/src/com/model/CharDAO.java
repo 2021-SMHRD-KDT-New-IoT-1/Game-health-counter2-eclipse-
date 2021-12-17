@@ -11,7 +11,6 @@ public class CharDAO {
 	ResultSet rs = null;
 	int cnt;
 	
-	
 	// 회원가입시 무조건 캐릭터 생성
 	public int CharCreat(String m_id) {
 				try {
@@ -39,73 +38,111 @@ public class CharDAO {
 				return cnt;
 			}
 	
-	
-	
-	// 캐릭터 level 불러오기
-	public int CharLv(String m_id) {
-		int c_level = -1;
+	// 캐릭터 정보 넘기기
+	public String charInfo(String id) {
 		
+		int c_level =0;
+		int c_exp =0;
+		String m_nickname ="";
+
 		try {
 			connection();
 			System.out.println("DB 연결 성공");
 
-			// 회원 로그인
-			String sql = "select c_level from t_character where m_id=?";
-			 
+			String sql = "select a.m_id, a.c_level, a.c_exp, b.m_nickname " + "from t_character a, t_member b "
+					+ "where a.m_id = b.m_id AND b.m_id =?";
+
 			pst = conn.prepareStatement(sql);
 
-			pst.setString(1, m_id);
+			pst.setString(1, id);
 
 			rs = pst.executeQuery();
-			
+
 			if (rs.next()) {
 				c_level = rs.getInt("c_level");
-			
-			}else {
-				System.out.println("level 조회실패");
-			}
-		}catch (Exception e) {
-				System.out.println("로그인 실패(예외 발생)");
-				e.printStackTrace();
-			} finally {
-				close();
-			}
-		return c_level;
-	}
-	
-	
-	
-	// 캐릭터 누적 Exp 불러오기
-	public int CharExp(String m_id) {
-		int c_exp = -1;
-		
-		try {
-			connection();
-			System.out.println("DB 연결 성공");
-
-			
-			String sql = "";
-			 
-			pst = conn.prepareStatement(sql);
-
-			pst.setString(1, m_id);
-
-			rs = pst.executeQuery();
-			
-			if (rs.next()) {
 				c_exp = rs.getInt("c_exp");
-			
-			}else {
-				System.out.println("exp 조회실패");
+				m_nickname = rs.getString("m_nickname");
+
+			} else {
+				System.out.println("캐릭터 정보 조회 실패");
 			}
-		}catch (Exception e) {
-				System.out.println("exp 조회실패(예외 발생)");
-				e.printStackTrace();
-			} finally {
-				close();
-			}
-		return c_exp;
+		} catch (Exception e) {
+			System.out.println("캐릭터 정보 조회 실패(예외 발생)");
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+
+		return m_nickname+","+c_level+","+c_exp;
 	}
+	
+//	// 캐릭터 level 불러오기
+//	public int CharLv(String m_id) {
+//		int c_level = -1;
+//		
+//		try {
+//			connection();
+//			System.out.println("DB 연결 성공");
+//
+//			// 회원 로그인
+//			String sql = "select c_level from t_character where m_id=?";
+//			 
+//			pst = conn.prepareStatement(sql);
+//
+//			pst.setString(1, m_id);
+//
+//			rs = pst.executeQuery();
+//			
+//			if (rs.next()) {
+//				c_level = rs.getInt("c_level");
+//			
+//			}else {
+//				System.out.println("level 조회실패");
+//			}
+//		}catch (Exception e) {
+//				System.out.println("로그인 실패(예외 발생)");
+//				e.printStackTrace();
+//			} finally {
+//				close();
+//			}
+//		return c_level;
+//	}
+//	
+//	
+//	
+//	// 캐릭터 누적 Exp 불러오기
+//	public int CharExp(String m_id) {
+//		int c_exp = -1;
+//		
+//		try {
+//			connection();
+//			System.out.println("DB 연결 성공");
+//
+//			
+//			String sql = "";
+//			 
+//			pst = conn.prepareStatement(sql);
+//
+//			pst.setString(1, m_id);
+//
+//			rs = pst.executeQuery();
+//			
+//			if (rs.next()) {
+//				c_exp = rs.getInt("c_exp");
+//			
+//			}else {
+//				System.out.println("exp 조회실패");
+//			}
+//		}catch (Exception e) {
+//				System.out.println("exp 조회실패(예외 발생)");
+//				e.printStackTrace();
+//			} finally {
+//				close();
+//			}
+//		return c_exp;
+//	}
+	
+	
 	
 	
 	

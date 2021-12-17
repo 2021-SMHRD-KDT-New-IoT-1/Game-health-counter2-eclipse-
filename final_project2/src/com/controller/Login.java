@@ -34,19 +34,13 @@ public class Login extends HttpServlet {
 		
 		String m_id = new MemberDAO().login(id, pwd);
 
-		if(!m_id.equals("")) {
-		System.out.println("조회 후 가지고 온 id : "+ m_id);
-		//로그인성공했을때 조건문이니까 성공 보내기~
-		try {
+		if (!m_id.equals("")) {
+			System.out.println("조회 후 가지고 온 id : " + m_id);
+			// 로그인성공했을때 조건문이니까 성공 보내기~
 			response.setContentType("text/html; charset=UTF-8");
-		    
 			PrintWriter out = response.getWriter();
-			out.print("성공"); //id를 서버로 보낸다.
-			
-		}catch (Exception e) {
-			e.printStackTrace();
+			out.print("성공"); // id를 서버로 보낸다.
 		}
-	}
 		
 		//		try {
 ////			String result = member_vo.getM_nickname();

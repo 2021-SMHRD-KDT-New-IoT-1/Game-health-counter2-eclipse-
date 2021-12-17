@@ -62,7 +62,10 @@ public class AthleDAO {
 			System.out.println("DB 연결 성공");
 
 			// 타임 어택 모드 기록 조회
-			String sql = "select adate, max(timeattack_rec) as TIME_REC from (select to_char(reg_date,'yyyymmdd') as adate, timeattack_rec from t_athletic where m_id=? AND to_char(reg_date,'yyyymmdd')=? AND time_mode =?) group by adate";
+			String sql = "select adate, max(timeattack_rec) as TIME_REC "
+					+ "from (select to_char(reg_date,'yyyymmdd') as adate, timeattack_rec "
+					+ "from t_athletic where m_id=? AND to_char(reg_date,'yyyymmdd')=? AND time_mode =?) "
+					+ "group by adate";
 
 			pst = conn.prepareStatement(sql);
 
