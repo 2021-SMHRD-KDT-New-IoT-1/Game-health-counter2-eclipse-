@@ -25,6 +25,21 @@ public class RaidVO {
 
 
 
+
+	public String getRaid_seq() {
+		return raid_seq;
+	}
+
+
+
+
+	public void setRaid_seq(String raid_seq) {
+		this.raid_seq = raid_seq;
+	}
+
+
+
+
 	public String getRaid_kind() {
 		return raid_kind;
 	}
