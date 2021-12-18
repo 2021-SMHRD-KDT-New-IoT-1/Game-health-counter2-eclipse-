@@ -28,7 +28,6 @@ public class QuestList extends HttpServlet {
 		arr = new QuestDAO().questList(id);
 		System.out.println("보내는 객체 내용: "+arr.toString());
 		
-		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(arr.toString());		
