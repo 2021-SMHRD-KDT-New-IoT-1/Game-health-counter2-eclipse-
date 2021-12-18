@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 
 public class RaidDAO {
@@ -15,12 +16,13 @@ public class RaidDAO {
 	PreparedStatement pst = null;
 	ResultSet rs = null;
 	int cnt;
+	Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create(); //  DateFormat변경후 생성
 	
 //	ArrayList<Integer> raidSeq_al = new ArrayList<Integer>();
 	ArrayList<RaidVO> raidVO_al = new ArrayList<RaidVO>();
 	
 	
-	public JsonArray raidInfo(String id) { // 레이드버튼 눌렀을 때 레이드화면 정보
+	public ArrayList<RaidVO> raidInfo(String id) { // 레이드버튼 눌렀을 때 레이드화면 정보
 		// 여기서 레이드 세개 다 가져온 다음에
 		// 안드에서 참가중인지 아닌지 알려주기.
 		JsonArray arr = new JsonArray();
@@ -40,11 +42,11 @@ public class RaidDAO {
 					String raid_cnt = rs.getString("raid_mission");
 					Date reg_date = rs.getDate("reg_date");
 				
-					RaidVO raid_vo = new RaidVO(raid_seq, raid_kind, raid_name, raid_cnt, reg_date);
-//					raidVO_al.add(raid_vo);
-					String json = new Gson().toJson(raid_vo);
+					RaidVO raid_vo = new RaidVO(raid_seq, raid_kind, raid_name, raid_cnt, reg_date,"false");
+					raidVO_al.add(raid_vo);
 	
-					arr.add(json);
+	
+			
 					    
 					
 					// 참가중인 레이드 알려주기
@@ -60,19 +62,20 @@ public class RaidDAO {
 			} finally {
 				close();
 			}
-		return arr;
+		return raidVO_al;
 	}
 	
 	
-	public int appRecord(String m_id, String raid_seq){
+	public String[] appRecord(String m_id, String raid_seq){
 		// 참여중인 레이드 시퀀스를 안드에서 받아온다. 안드에도 raid객체가 있어야한다..?? 의문이 들긴 하지만 있다는 가정하에
 		// 여기서 뽑아줄 정보 
 		// 내가 한 개수
-		
+		String[] result = {"-1","-1"};
+			
 		try {
 			connection();
 
-				String sql = "select applier_record from t_raid_applier where m_id = ? and raid_seq = ?";
+				String sql = "select applier_record, raid_seq from t_raid_applier where m_id = ? and raid_seq = ?";
 				
 				pst = conn.prepareStatement(sql);
 				pst.setString(1,m_id);
@@ -82,9 +85,14 @@ public class RaidDAO {
 				
 			
 				if(rs.next()){
-					int applier_record = rs.getInt("applier_record");
+					String applier_record = rs.getString("applier_record");
+					String raid_seq1 = rs.getString("raid_seq");
 					System.out.println("DB조회 성공 : appRecord()");
-					return applier_record;
+					
+					result[0] = applier_record;
+					result[1] = raid_seq1;
+					
+					return result;
 					}else {
 						System.out.println("DB조회 실패 : appRecord()");
 					}
@@ -97,15 +105,14 @@ public class RaidDAO {
 				close();
 			}
 		
-		return 0;
+		return result;
 	}
 	
 	
 	// 해당 레이드에 참가자가 기여한 총 횟수(총!!!!!)
 	public int raidAllRecord(String raid_seq){
-		// 참여중인 레이드 시퀀스를 안드에서 받아온다. 안드에도 raid객체가 있어야한다..?? 의문이 들긴 하지만 있다는 가정하에
-		// 여기서 뽑아줄 정보 
-		// 내가 한 개수
+
+		int applier_record = 0;
 		
 		try {
 			connection();
@@ -119,12 +126,14 @@ public class RaidDAO {
 				
 			
 				if(rs.next()){
-					int applier_record = rs.getInt("applier_record");
+					applier_record = rs.getInt("sum(applier_record)");
 					System.out.println("DB조회 성공 : raidAllRecord()");
 					return applier_record;
 					
+					
 					}else {
 						System.out.println("DB조회 실패 : raidAllRecord()");
+						
 					}
 				
 				
@@ -134,8 +143,7 @@ public class RaidDAO {
 			} finally {
 				close();
 			}
-		
-		return 0;
+		return applier_record;
 	}
 
 	
