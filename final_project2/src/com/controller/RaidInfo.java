@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -30,19 +31,40 @@ public class RaidInfo extends HttpServlet {
 		// RaidVO(raid_seq, raid_kind, raid_name, raid_cnt, reg_date)를 반환한다.
 		
 		String m_id = request.getParameter("m_id");
+		String raid_seq = "12"; //예진쌤을 스쿼트로 무찌르자!
+		
+		//String raid_seq = request.getParameter("raid_seq");
+		
 		System.out.println(m_id);
 		
 		
-		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create(); //  DateFormat변경후 생성
 		RaidDAO dao = new RaidDAO();
-		ArrayList<RaidVO> raid_al = new ArrayList<RaidVO>();
-		
 		JsonArray arr = new JsonArray();
 		
-		arr = dao.raidInfo(m_id);
+		
+		String[] result = dao.appRecord(m_id, raid_seq);
+		
+		
+		
+		ArrayList<RaidVO> raid_al = dao.raidInfo(m_id);
+		
+		
+		for(int i = 0; i<raid_al.size(); i++) {
+			if(result[1]!=null) {
+				if(result[1] == raid_al.get(i).getRaid_seq()) {
+					raid_al.get(i).setCheck("true");				
+			}
+		}		
+			arr.add(gson.toJson(raid_al.get(i)));
+		}
+		
+		
 		System.out.println(arr.toString());
-  
-
+		
+		// 해당 레이드에 참가중인지 아닌지
+		
+		
 		
 		try {
 			response.setContentType("text/html; charset=UTF-8");
