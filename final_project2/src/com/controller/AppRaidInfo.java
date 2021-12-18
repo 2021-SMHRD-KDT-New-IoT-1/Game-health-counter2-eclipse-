@@ -48,7 +48,7 @@ public class AppRaidInfo extends HttpServlet {
 
 			PrintWriter out = response.getWriter();
 			out.print(applier_record[0] + "#" + all_record); // 기여한 횟수와 참가자총기여횟수를 안드에게~
-			// 13*23 이렇게 구분한다.
+			// 13#23 이렇게 구분한다.
 			
 		}catch (Exception e) {
 			e.printStackTrace();

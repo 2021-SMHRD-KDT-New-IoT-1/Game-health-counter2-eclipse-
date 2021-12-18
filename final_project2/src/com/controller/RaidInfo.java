@@ -52,7 +52,7 @@ public class RaidInfo extends HttpServlet {
 		
 		for(int i = 0; i<raid_al.size(); i++) {
 			if(result[1]!=null) {
-				if(result[1] == raid_al.get(i).getRaid_seq()) {
+				if(result[1].equals(raid_al.get(i).getRaid_seq())) {
 					raid_al.get(i).setCheck("true");				
 			}
 		}		
