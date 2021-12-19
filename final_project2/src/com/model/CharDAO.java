@@ -76,6 +76,42 @@ public class CharDAO {
 		return m_nickname+","+c_level+","+c_exp;
 	}
 	
+
+
+	// 캐릭터 누적 Exp 불러오기
+	public int CharExp(String id) {
+		int c_exp = -1;
+		
+		try {
+			connection();
+			System.out.println("DB 연결 성공");
+
+			
+			String sql = "select sum(r.applier_exp+q.q_exp) as exp "
+					+ "from t_quest q, t_raid_applier r where q.m_id = r.m_id and r.m_id = ? and q.q_check = 'Y'";
+			 
+			pst = conn.prepareStatement(sql);
+
+			pst.setString(1, id);
+			
+			rs = pst.executeQuery();
+			
+			if (rs.next()) {
+				c_exp = rs.getInt("exp");
+			
+			}else {
+				System.out.println("exp DB 조회실패");
+			}
+		}catch (Exception e) {
+				System.out.println("exp 조회실패(예외 발생)");
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+		return c_exp;
+	}
+	
+	
 //	// 캐릭터 level 불러오기
 //	public int CharLv(String m_id) {
 //		int c_level = -1;
@@ -107,43 +143,6 @@ public class CharDAO {
 //			}
 //		return c_level;
 //	}
-//	
-//	
-//	
-//	// 캐릭터 누적 Exp 불러오기
-//	public int CharExp(String m_id) {
-//		int c_exp = -1;
-//		
-//		try {
-//			connection();
-//			System.out.println("DB 연결 성공");
-//
-//			
-//			String sql = "";
-//			 
-//			pst = conn.prepareStatement(sql);
-//
-//			pst.setString(1, m_id);
-//
-//			rs = pst.executeQuery();
-//			
-//			if (rs.next()) {
-//				c_exp = rs.getInt("c_exp");
-//			
-//			}else {
-//				System.out.println("exp 조회실패");
-//			}
-//		}catch (Exception e) {
-//				System.out.println("exp 조회실패(예외 발생)");
-//				e.printStackTrace();
-//			} finally {
-//				close();
-//			}
-//		return c_exp;
-//	}
-	
-	
-	
 	
 	
 	
