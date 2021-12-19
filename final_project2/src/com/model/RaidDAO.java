@@ -147,6 +147,69 @@ public class RaidDAO {
 	}
 
 	
+	public boolean insertAppRaid(String id, String seq) {
+		try {
+			connection();
+			System.out.println("insertDB연결성공");
+
+				String sql = "insert into t_raid_applier(m_id,raid_seq) values (?,?)";
+				
+				pst = conn.prepareStatement(sql);
+				pst.setString(1, id);
+				pst.setString(2, seq);
+				
+				int cnt = pst.executeUpdate();
+				
+				if(cnt>0) {
+					System.out.println("insertAppRaid 성공!");
+					return true;
+				}else {
+					System.out.println("insertAppRaid 실패");
+				}
+				
+		}catch (Exception e) {
+				System.out.println("예외발생: DAO insertAppRaid 실패");
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+		
+		return false;
+	}
+	
+	
+	public boolean deleteAppRaid(String id, String seq) {
+		try {
+			connection();
+
+				String sql = "delete from t_raid_applier where m_id = ? and raid_seq = ?";
+				
+				pst = conn.prepareStatement(sql);
+				pst.setString(1, id);
+				pst.setString(2, seq);
+				
+				int cnt = pst.executeUpdate();
+				
+				if(cnt>0) {
+					System.out.println("deleteAppRaid 성공!");
+					
+					return true;
+				}else {
+					System.out.println("deleteAppRaid 실패");
+				}
+				
+				
+				
+		}catch (Exception e) {
+				System.out.println("예외발생: DAO deleteAppRaid 실패");
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+		
+		return false;
+	}
+	
 	
 	
 	
