@@ -2,7 +2,9 @@ package com.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +26,6 @@ import com.model.RaidVO;
 public class RaidInfo extends HttpServlet {
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
 		request.setCharacterEncoding("UTF-8");
 		// 레이드 화면(정보화면X) 정보 뿌리는 서블릿
 		// 안드에서 m_id 받는다.

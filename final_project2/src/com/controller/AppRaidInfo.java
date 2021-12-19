@@ -2,7 +2,9 @@ package com.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -18,12 +20,12 @@ import com.model.RaidVO;
 
 @WebServlet("/AppRaidInfo")
 public class AppRaidInfo extends HttpServlet {
-
+	
 
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 안드에서 m_id, raid_seq 받기 -> 이용해서 appRecord(m_id,raid_seq)로 해당 레이드의 기여횟수 리턴
-		// 2. 
+		// 2.
 		
 		request.setCharacterEncoding("UTF-8");
 

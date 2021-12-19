@@ -2,6 +2,8 @@ package com.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +25,7 @@ public class Login extends HttpServlet {
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		System.out.println("서버진입");
+		serverLog("Login");
 		
 		request.setCharacterEncoding("UTF-8");
 		
@@ -73,6 +75,15 @@ public class Login extends HttpServlet {
 //			
 //		}
 		
+	}
+	
+	public void serverLog(String serverName) {
+		Date dt = new Date();
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분 ss초");
+		String time = sdf.format(dt);
+		System.out.println();
+		System.out.println(serverName+"서버 진입(" + time + ")");
 	}
 
 }
