@@ -12,6 +12,9 @@ public class RaidVO {
 	private String check;
 	
 	
+	private String applier_record;// applier¿ë ÇÊµå 
+	
+	
 	
 	
 	public RaidVO(String raid_seq, String raid_kind, String raid_name, String raid_cnt, Date reg_date, String check) {
@@ -23,9 +26,25 @@ public class RaidVO {
 		this.reg_date = reg_date;
 		this.check = check;
 	}
+	
+	
+	// applierRaid
+	public RaidVO(String raid_seq,String applier_record) {
+		this.raid_seq = raid_seq;
+		this.applier_record = applier_record;
+	}
+
+	
 
 
+	public String getApplier_record() {
+		return applier_record;
+	}
 
+
+	public void setApplier_record(String applier_record) {
+		this.applier_record = applier_record;
+	}
 
 
 	public String getRaid_seq() {

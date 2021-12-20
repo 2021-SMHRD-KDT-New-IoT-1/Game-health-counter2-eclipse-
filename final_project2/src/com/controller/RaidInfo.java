@@ -2,9 +2,7 @@ package com.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.model.RaidDAO;
 import com.model.RaidVO;
 
@@ -32,7 +28,13 @@ public class RaidInfo extends HttpServlet {
 		// RaidVO(raid_seq, raid_kind, raid_name, raid_cnt, reg_date)를 반환한다.
 		
 		String m_id = request.getParameter("m_id");
-		String raid_seq = "12"; //예진쌤을 스쿼트로 무찌르자!
+		String raid_seq_pull = request.getParameter("raid_seq_pull");
+		String raid_seq_sqt = request.getParameter("raid_seq_sqt");
+		String raid_seq_push = request.getParameter("raid_seq_push");
+		
+		System.out.println("겟태그한 레이드시퀀스 : "+ raid_seq_pull);
+		System.out.println("겟태그한 레이드시퀀스 : "+ raid_seq_sqt);
+		System.out.println("겟태그한 레이드시퀀스 : "+ raid_seq_push);
 		
 		//String raid_seq = request.getParameter("raid_seq");
 		
@@ -44,22 +46,34 @@ public class RaidInfo extends HttpServlet {
 		JsonArray arr = new JsonArray();
 		
 		
-		String[] result = dao.appRecord(m_id, raid_seq);
+		ArrayList<RaidVO> appRaid_al = dao.appRecord(m_id, raid_seq_pull, raid_seq_sqt, raid_seq_push);
+		// 여기서 참가중인 raid_seq와 기록이 나온다.
 		
 		
+		ArrayList<RaidVO> raidInfo_al = dao.raidInfo(m_id);
+		// 레이드 화면에 뿌릴 데이터들
 		
-		ArrayList<RaidVO> raid_al = dao.raidInfo(m_id);
-		
-		
-		for(int i = 0; i<raid_al.size(); i++) {
-			if(result[1]!=null) {
-				if(result[1].equals(raid_al.get(i).getRaid_seq())) {
-					raid_al.get(i).setCheck("true");				
+
+		for(int i = 0; i < raidInfo_al.size(); i++) {
+			for(int j = 0; j < appRaid_al.size(); j++) {
+				if(raidInfo_al.get(i).getRaid_seq().equals(appRaid_al.get(j).getRaid_seq())) {
+					raidInfo_al.get(i).setCheck("true");
+				}
 			}
-		}		
-			arr.add(gson.toJson(raid_al.get(i)));
+			arr.add(gson.toJson(raidInfo_al.get(i)));
 		}
 		
+		
+		
+//		for(int i = 0; i<raidInfo_al.size(); i++) {
+//			if(result[1]!=null) {
+//				if(result[1].equals(raidInfo_al.get(i).getRaid_seq())) {
+//					raidInfo_al.get(i).setCheck("true");				
+//			}
+//		}		
+//			arr.add(gson.toJson(raidInfo_al.get(i)));
+//		}
+//		
 		
 		System.out.println(arr.toString());
 		

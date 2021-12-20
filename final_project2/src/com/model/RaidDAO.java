@@ -23,8 +23,7 @@ public class RaidDAO {
 	
 	
 	public ArrayList<RaidVO> raidInfo(String id) { // 레이드버튼 눌렀을 때 레이드화면 정보
-		// 여기서 레이드 세개 다 가져온 다음에
-		// 안드에서 참가중인지 아닌지 알려주기.
+		// 여기서 레이드 세개 다 가져옴
 		JsonArray arr = new JsonArray();
 		try {
 			connection();
@@ -44,15 +43,6 @@ public class RaidDAO {
 				
 					RaidVO raid_vo = new RaidVO(raid_seq, raid_kind, raid_name, raid_cnt, reg_date,"false");
 					raidVO_al.add(raid_vo);
-	
-	
-			
-					    
-					
-					// 참가중인 레이드 알려주기
-					// 참가하기 누르면 참가중으로 바뀌고 다시 그 화면 갔을 때 참가중인 거는 유지가 되어야 한다.
-					// 내가 이 시퀀스를 넘겨주면 안드에서 참가중인 시퀀스 보관해놨다가 그 시퀀스만 참여중으로 바꾼다.
-					// sharedPreference 
 					
 					}
 				
@@ -66,7 +56,48 @@ public class RaidDAO {
 	}
 	
 	
-	public String[] appRecord(String m_id, String raid_seq){
+	public ArrayList<RaidVO> appRecord(String m_id, String raid_seq_pull, String raid_seq_sqt, String raid_seq_push){
+		// 참여중인 레이드 시퀀스를 안드에서 받아온다. 안드에도 raid객체가 있어야한다..?? 의문이 들긴 하지만 있다는 가정하에
+		// 여기서 뽑아줄 정보 
+		// 내가 한 개수
+		ArrayList<RaidVO> al = new ArrayList<>();
+			
+		try {
+			connection();
+
+				String sql = "select applier_record, raid_seq from t_raid_applier where m_id = ? and raid_seq in(?,?,?)";
+				
+				pst = conn.prepareStatement(sql);
+				pst.setString(1,m_id);
+				pst.setString(2,raid_seq_pull);
+				pst.setString(3,raid_seq_sqt);
+				pst.setString(4,raid_seq_push);
+				
+				rs = pst.executeQuery();
+				
+			
+				while(rs.next()){
+					String applier_record = rs.getString("applier_record");
+					String raid_seq = rs.getString("raid_seq");
+					
+					al.add(new RaidVO(raid_seq,applier_record));
+				}
+				
+					return al;
+				
+				
+		}catch (Exception e) {
+				System.out.println("예외발생 : DAO의 appRecord()");
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+		
+		return al;
+	}
+	
+	// AppRaidInfo서블릿에 사용할 appRecord
+	public String[] appRecord(String m_id, String seq){
 		// 참여중인 레이드 시퀀스를 안드에서 받아온다. 안드에도 raid객체가 있어야한다..?? 의문이 들긴 하지만 있다는 가정하에
 		// 여기서 뽑아줄 정보 
 		// 내가 한 개수
@@ -79,23 +110,21 @@ public class RaidDAO {
 				
 				pst = conn.prepareStatement(sql);
 				pst.setString(1,m_id);
-				pst.setString(2,raid_seq);
+				pst.setString(2,seq);
+	
 				
 				rs = pst.executeQuery();
 				
 			
-				if(rs.next()){
+				while(rs.next()){
 					String applier_record = rs.getString("applier_record");
-					String raid_seq1 = rs.getString("raid_seq");
-					System.out.println("DB조회 성공 : appRecord()");
+					String raid_seq = rs.getString("raid_seq");
 					
 					result[0] = applier_record;
-					result[1] = raid_seq1;
-					
+					result[1] = raid_seq;
+				}
+				
 					return result;
-					}else {
-						System.out.println("DB조회 실패 : appRecord()");
-					}
 				
 				
 		}catch (Exception e) {
@@ -172,6 +201,7 @@ public class RaidDAO {
 				e.printStackTrace();
 			} finally {
 				close();
+				
 			}
 		
 		return false;
@@ -277,8 +307,10 @@ public class RaidDAO {
 				pst.close();
 			}
 			if (conn != null) {
+				conn.commit();
 				conn.close();
 			}
+			
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
