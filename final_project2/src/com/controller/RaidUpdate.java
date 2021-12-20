@@ -31,7 +31,6 @@ public class RaidUpdate extends HttpServlet {
 		
 		RaidDAO dao = new RaidDAO();
 		String[] result = dao.appRecord(id, seq);
-		System.out.println(result[0].toString() + result[1].toString());
 		
 		if(result[1].equals("-1")) { // 인서트해야함
 			System.out.println(result[1].toString());

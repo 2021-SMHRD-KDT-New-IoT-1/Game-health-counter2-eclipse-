@@ -101,7 +101,7 @@ public class RaidDAO {
 		// 참여중인 레이드 시퀀스를 안드에서 받아온다. 안드에도 raid객체가 있어야한다..?? 의문이 들긴 하지만 있다는 가정하에
 		// 여기서 뽑아줄 정보 
 		// 내가 한 개수
-		String[] result = {"-1","-1"};
+		String[] result = {"0","-1"};
 			
 		try {
 			connection();
