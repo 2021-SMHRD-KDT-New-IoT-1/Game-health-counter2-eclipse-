@@ -41,16 +41,13 @@ public class CharDAO {
 	// 캐릭터 정보 넘기기
 	public String charInfo(String id) {
 		
-		int c_level =0;
-		int c_exp =0;
 		String m_nickname ="";
 
 		try {
 			connection();
 			System.out.println("DB 연결 성공");
 
-			String sql = "select a.m_id, a.c_level, a.c_exp, b.m_nickname " + "from t_character a, t_member b "
-					+ "where a.m_id = b.m_id AND b.m_id =?";
+			String sql = "select m_id, m_nickname from t_member where m_id = ?";
 
 			pst = conn.prepareStatement(sql);
 
@@ -59,8 +56,6 @@ public class CharDAO {
 			rs = pst.executeQuery();
 
 			if (rs.next()) {
-				c_level = rs.getInt("c_level");
-				c_exp = rs.getInt("c_exp");
 				m_nickname = rs.getString("m_nickname");
 
 			} else {
@@ -73,7 +68,7 @@ public class CharDAO {
 			close();
 		}
 
-		return m_nickname+","+c_level+","+c_exp;
+		return m_nickname;
 	}
 	
 
@@ -87,9 +82,10 @@ public class CharDAO {
 			System.out.println("DB 연결 성공");
 
 			
-			String sql = "select sum(r.applier_exp+q.q_exp) as exp "
-					+ "from t_quest q, t_raid_applier r where q.m_id = r.m_id and r.m_id = ? and q.q_check = 'Y'";
-			 
+//			String sql = "select sum(r.applier_exp+q.q_exp) as exp "
+//					+ "from t_quest q, t_raid_applier r where q.m_id = r.m_id and r.m_id = ? and q.q_check = 'Y'";
+			String sql = "select m_id, c_exp from t_character where m_id = ?";
+			
 			pst = conn.prepareStatement(sql);
 
 			pst.setString(1, id);
@@ -97,7 +93,7 @@ public class CharDAO {
 			rs = pst.executeQuery();
 			
 			if (rs.next()) {
-				c_exp = rs.getInt("exp");
+				c_exp = rs.getInt("c_exp");
 			
 			}else {
 				System.out.println("exp DB 조회실패");
