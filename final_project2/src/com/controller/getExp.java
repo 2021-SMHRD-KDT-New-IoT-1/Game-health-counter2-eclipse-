@@ -18,7 +18,7 @@ public class getExp extends HttpServlet {
 
 
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		System.out.println("getExp서버 진입");
 		request.setCharacterEncoding("UTF-8");
 		String id = request.getParameter("m_id");
 

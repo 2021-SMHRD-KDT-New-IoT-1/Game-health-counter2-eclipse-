@@ -22,8 +22,7 @@ public class RankDAO {
 			connection();
 
 			// ***** 여기서부터 쿼리 부분
-			String sql = "select rowNum, a.m_nickname, b.c_level, b.total_exp from t_member a, (select * from (select m_id, c_level, sum(q_exp+applier_exp) as total_exp from (select a.m_id, a.c_level, b.q_exp, b.q_check, c.applier_exp from t_character a, (select b.m_id, b.q_exp, b.q_check from t_quest b where b.q_check = 'Y') b, (select c.m_id, c.applier_exp from T_RAID_APPLIER c where c.raid_seq = 12) c where a.m_id = b.m_id(+) and b.m_id = c.m_id(+) and not a.m_id = 'admin' order by m_id) GROUP BY m_id, c_level) where total_exp is not null order by total_exp desc) b where a.m_id = b.m_id";
-
+			String sql = "select ROWNUM, temp.* from (select a.m_nickname, b.m_id, b.c_exp, b.lv from t_member a, (select m_id, c_exp, trunc(c_exp/100) lv from t_character) b where a.m_id = b.m_id order by b.c_exp desc) temp";
 			// 쿼리문 pst에 준비
 			pst = conn.prepareStatement(sql);
 
@@ -31,10 +30,10 @@ public class RankDAO {
 			rs = pst.executeQuery();
 
 			while (rs.next()) {
-				int rowNum = rs.getInt("rownum");
+				int rowNum = rs.getInt("ROWNUM");
 				String m_nickname = rs.getString("m_nickname");
-				int c_level = rs.getInt("c_level");
-				int total_exp = rs.getInt("total_exp");
+				int c_level = rs.getInt("LV");
+				int total_exp = rs.getInt("c_exp");
 
 				RankVO rank_vo = new RankVO(rowNum, m_nickname, c_level, total_exp);
 
