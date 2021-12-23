@@ -22,12 +22,20 @@ public class QuestList extends HttpServlet {
 		
 		request.setCharacterEncoding("UTF-8");
 		
+		QuestDAO dao = new QuestDAO();
+		int cnt =0;
+		
+		
 		String id = request.getParameter("m_id");
 		System.out.println("요청하는 id(안드 퀘스트부분) = "+id);
 		
+		// questCheck()
+		cnt = dao.questCheck(id);
+		
+		// questList()
 		JsonArray arr = new JsonArray();
 		
-		arr = new QuestDAO().questList(id);
+		arr = dao.questList(id);
 		System.out.println("보내는 객체 내용: "+arr.toString());
 		
 		response.setContentType("application/json");

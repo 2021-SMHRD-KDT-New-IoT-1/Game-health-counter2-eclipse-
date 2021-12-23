@@ -15,8 +15,160 @@ public class QuestDAO {
 	Connection conn = null;
 	PreparedStatement pst = null;
 	ResultSet rs = null;
+	int cnt =0;
+	
+	// 퀘스트 조건 만족하는 데이터 검색해서 questCheck를 'Y'로 바꿔주는 메소드
+	public int questCheck(String id) {
+		
+		int get_push =0;
+		int get_pull =0;
+		int get_squart =0;
+		
+		int get_cnt=0;
+		String get_check="";
+		int get_label=0;
 
-	public JsonArray questList(String id) { // 안드에서 퀘스트 탭 눌렀을시 퀘스트 리스트 보여주기
+		try {
+			
+			connection();
+
+			String sql = "select m_id, to_char(reg_date,'yyyymmdd') as TODAY, sum(pushup_cnt) as PUSH, sum(pullup_cnt) as PULL, sum(squat_cnt) as SQUART from t_athletic where to_char(reg_date,'yyyymmdd') = to_char(sysdate,'yyyymmdd') AND m_id = ? group by m_id, to_char(reg_date,'yyyymmdd')";
+			pst = conn.prepareStatement(sql);
+			pst.setString(1, id);
+
+			rs = pst.executeQuery();
+
+			if (rs.next()) {
+				System.out.println("오늘 운동한 총합 갯수 조회(퀘스트용) 성공!");
+
+				get_push = rs.getInt(3);
+				get_pull = rs.getInt(4);
+				get_squart = rs.getInt(5);
+				
+				// q_label =0(푸쉬업 계열)인 퀘스트 조회
+				sql = "select m_id, q_cnt, q_check, q_label from t_quest where m_id =? and q_label = 0";
+				pst = conn.prepareStatement(sql);
+				pst.setString(1, id);
+				
+				rs = pst.executeQuery();
+
+				if (rs.next()) {
+					System.out.println("q_label =0(푸쉬업 계열)인 퀘스트 조회(퀘스트용) 성공!");
+
+					get_cnt = rs.getInt(2);
+					get_check = rs.getString(3);
+					get_label = rs.getInt(4);
+					System.out.println("get_push: "+get_push+"get_cnt: "+get_cnt+", get_check: "+get_check+", get_label: "+get_label);
+
+				} else {
+					System.out.println("q_label =0(푸쉬업 계열)인 퀘스트 조회(퀘스트용) 실패!");
+				}
+				
+				// get_push >= get_cnt 이면 q_check를 Y로 업데이트
+				if(get_push >= get_cnt) {
+					
+					sql = "update t_quest set q_check = 'Y' where m_id = ? and q_label = 0";
+					pst = conn.prepareStatement(sql);
+					pst.setString(1, id);
+
+					cnt = pst.executeUpdate();
+					
+					if (cnt > 0) {
+						System.out.println("q_check (푸쉬업 계열)업데이트 성공(N -> Y)");
+					} else {
+						System.out.println("q_check (푸쉬업 계열)업데이트 실패");
+					}
+				}
+				
+				
+				// q_label =1(푸쉬업 계열)인 퀘스트 조회
+				sql = "select m_id, q_cnt, q_check, q_label from t_quest where m_id =? and q_label = 1";
+				pst = conn.prepareStatement(sql);
+				pst.setString(1, id);
+				
+				rs = pst.executeQuery();
+
+				if (rs.next()) {
+					System.out.println("q_label =1(풀업 계열)인 퀘스트 조회(퀘스트용) 성공!");
+
+					get_cnt = rs.getInt(2);
+					get_check = rs.getString(3);
+					get_label = rs.getInt(4);
+					System.out.println("get_pull: "+get_pull+"get_cnt: "+get_cnt+", get_check: "+get_check+", get_label: "+get_label);
+
+				} else {
+					System.out.println("q_label =1(풀업 계열)인 퀘스트 조회(퀘스트용) 실패!");
+				}
+				
+				// get_pull >= get_cnt 이면 q_check를 Y로 업데이트
+				if(get_pull >= get_cnt) {
+					
+					sql = "update t_quest set q_check = 'Y' where m_id = ? and q_label = 1";
+					pst = conn.prepareStatement(sql);
+					pst.setString(1, id);
+
+					cnt = pst.executeUpdate();
+					
+					if (cnt > 0) {
+						System.out.println("q_check (풀업 계열)업데이트 성공(N -> Y)");
+					} else {
+						System.out.println("q_check (풀업 계열)업데이트 실패");
+					}
+				}
+				
+				
+				// q_label =2(스쿼트 계열)인 퀘스트 조회
+				sql = "select m_id, q_cnt, q_check, q_label from t_quest where m_id =? and q_label = 2";
+				pst = conn.prepareStatement(sql);
+				pst.setString(1, id);
+				
+				rs = pst.executeQuery();
+
+				if (rs.next()) {
+					System.out.println("q_label =2(스쿼트 계열)인 퀘스트 조회(퀘스트용) 성공!");
+
+					get_cnt = rs.getInt(2);
+					get_check = rs.getString(3);
+					get_label = rs.getInt(4);
+					System.out.println("get_squart: "+get_squart+"get_cnt: "+get_cnt+", get_check: "+get_check+", get_label: "+get_label);
+
+				} else {
+					System.out.println("q_label =2(스쿼트 계열)인 퀘스트 조회(퀘스트용) 실패!");
+				}
+				
+				// get_squart >= get_cnt 이면 q_check를 Y로 업데이트
+				if(get_squart >= get_cnt) {
+					
+					sql = "update t_quest set q_check = 'Y' where m_id = ? and q_label = 2";
+					pst = conn.prepareStatement(sql);
+					pst.setString(1, id);
+
+					cnt = pst.executeUpdate();
+					
+					if (cnt > 0) {
+						System.out.println("q_check (스쿼트 계열)업데이트 성공(N -> Y)");
+					} else {
+						System.out.println("q_check (스쿼트 계열)업데이트 실패");
+					}
+				}
+				
+				
+				
+			} else {
+				System.out.println("운동한 총합 갯수 조회(퀘스트용) 실패!");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("questCheck() 실패!(예외발생)");
+		} finally {
+			close();
+		}
+		return cnt;
+	}
+	
+	// 안드에서 퀘스트 탭 눌렀을시 퀘스트 리스트 보여주기
+	public JsonArray questList(String id) { 
 
 		JsonArray arr = new JsonArray();
 

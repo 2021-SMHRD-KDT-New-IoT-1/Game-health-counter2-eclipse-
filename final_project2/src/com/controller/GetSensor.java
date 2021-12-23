@@ -66,8 +66,8 @@ public class GetSensor extends HttpServlet {
 
 		System.out.println(result);
 		
-		//response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=utf-8");
+//	    response.setCharacterEncoding("UTF-8");
 		response.getWriter().write("응답 성공");	
 		
 	}
