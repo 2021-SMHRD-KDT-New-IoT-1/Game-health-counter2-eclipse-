@@ -22,7 +22,7 @@ public class RankDAO {
 			connection();
 
 			// ***** 여기서부터 쿼리 부분
-			String sql = "select ROWNUM, temp.* from (select a.m_nickname, b.m_id, b.c_exp, b.lv from t_member a, (select m_id, c_exp, trunc(c_exp/100) lv from t_character) b where a.m_id = b.m_id order by b.c_exp desc) temp";
+			String sql = "select ROWNUM, temp.* from (select a.m_nickname, b.m_id, b.c_exp, b.lv from t_member a, (select m_id, c_exp, trunc(c_exp/100+1) lv from t_character) b where a.m_id = b.m_id order by b.c_exp desc) temp";
 			// 쿼리문 pst에 준비
 			pst = conn.prepareStatement(sql);
 
