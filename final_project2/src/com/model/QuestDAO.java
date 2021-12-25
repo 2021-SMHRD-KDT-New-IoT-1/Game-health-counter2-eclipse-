@@ -27,6 +27,7 @@ public class QuestDAO {
 		int get_cnt=0;
 		String get_check="";
 		int get_label=0;
+		int get_exp=0;
 
 		try {
 			
@@ -65,7 +66,7 @@ public class QuestDAO {
 				}
 				
 				// get_push >= get_cnt 이면 q_check를 Y로 업데이트
-				if(get_push >= get_cnt) {
+				if(get_push >= get_cnt && get_check.equals("N")) {
 					
 					sql = "update t_quest set q_check = 'Y' where m_id = ? and q_label = 0";
 					pst = conn.prepareStatement(sql);
@@ -78,11 +79,25 @@ public class QuestDAO {
 					} else {
 						System.out.println("q_check (푸쉬업 계열)업데이트 실패");
 					}
+					
+					sql = "update t_character set c_exp = (select sum(c_exp+?) updated_exp from t_character where m_id = ?) where m_id = ?";
+					pst = conn.prepareStatement(sql);
+					pst.setInt(1, get_exp);
+					pst.setString(2, id);
+					pst.setString(3, id);
+
+					cnt = pst.executeUpdate();
+					
+					if (cnt > 0) {
+						System.out.println("q_check (푸쉬업 계열)경험치 업데이트 성공(N -> Y)");
+					} else {
+						System.out.println("q_check (푸쉬업 계열)경험치 업데이트 실패");
+					}
 				}
 				
 				
-				// q_label =1(푸쉬업 계열)인 퀘스트 조회
-				sql = "select m_id, q_cnt, q_check, q_label from t_quest where m_id =? and q_label = 1";
+				// q_label =1(풀업 계열)인 퀘스트 조회
+				sql = "select m_id, q_cnt, q_check, q_label, q_exp from t_quest where m_id =? and q_label = 1";
 				pst = conn.prepareStatement(sql);
 				pst.setString(1, id);
 				
@@ -94,14 +109,16 @@ public class QuestDAO {
 					get_cnt = rs.getInt(2);
 					get_check = rs.getString(3);
 					get_label = rs.getInt(4);
-					System.out.println("get_pull: "+get_pull+"get_cnt: "+get_cnt+", get_check: "+get_check+", get_label: "+get_label);
+					get_exp = rs.getInt(5);
+					System.out.println("get_pull: "+get_pull+"get_cnt: "+get_cnt+", "
+							+ "get_check: "+get_check+", get_label: "+get_label+", get_exp: "+get_exp);
 
 				} else {
 					System.out.println("q_label =1(풀업 계열)인 퀘스트 조회(퀘스트용) 실패!");
 				}
 				
 				// get_pull >= get_cnt 이면 q_check를 Y로 업데이트
-				if(get_pull >= get_cnt) {
+				if(get_pull >= get_cnt && get_check.equals("N")) {
 					
 					sql = "update t_quest set q_check = 'Y' where m_id = ? and q_label = 1";
 					pst = conn.prepareStatement(sql);
@@ -114,6 +131,22 @@ public class QuestDAO {
 					} else {
 						System.out.println("q_check (풀업 계열)업데이트 실패");
 					}
+					
+					sql = "update t_character set c_exp = (select sum(c_exp+?) updated_exp from t_character where m_id = ?) where m_id = ?";
+					pst = conn.prepareStatement(sql);
+					pst.setInt(1, get_exp);
+					pst.setString(2, id);
+					pst.setString(3, id);
+
+					cnt = pst.executeUpdate();
+					
+					if (cnt > 0) {
+						System.out.println("q_check (풀업 계열)경험치 업데이트 성공(N -> Y)");
+					} else {
+						System.out.println("q_check (풀업 계열)경험치 업데이트 실패");
+					}
+					
+					
 				}
 				
 				
@@ -137,7 +170,7 @@ public class QuestDAO {
 				}
 				
 				// get_squart >= get_cnt 이면 q_check를 Y로 업데이트
-				if(get_squart >= get_cnt) {
+				if(get_squart >= get_cnt && get_check.equals("N")) {
 					
 					sql = "update t_quest set q_check = 'Y' where m_id = ? and q_label = 2";
 					pst = conn.prepareStatement(sql);
@@ -150,6 +183,21 @@ public class QuestDAO {
 					} else {
 						System.out.println("q_check (스쿼트 계열)업데이트 실패");
 					}
+					
+					sql = "update t_character set c_exp = (select sum(c_exp+?) updated_exp from t_character where m_id = ?) where m_id = ?";
+					pst = conn.prepareStatement(sql);
+					pst.setInt(1, get_exp);
+					pst.setString(2, id);
+					pst.setString(3, id);
+
+					cnt = pst.executeUpdate();
+					
+					if (cnt > 0) {
+						System.out.println("q_check (스쿼트 계열)경험치 업데이트 성공(N -> Y)");
+					} else {
+						System.out.println("q_check (스쿼트 계열)경험치 업데이트 실패");
+					}
+					
 				}
 				
 				

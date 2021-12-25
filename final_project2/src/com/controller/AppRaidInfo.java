@@ -30,11 +30,13 @@ public class AppRaidInfo extends HttpServlet {
 		//System.out.println(m_id + "" + raid_seq);
 		
 		RaidDAO dao = new RaidDAO();
+		
 		// 해당 레이드에 기여한 횟수, 1번인덱스엔 raid_seq 
 		String[] applier_record = dao.appRecord(m_id, raid_seq);
 		
 		// 모든 참가자 레이드 기여 횟수
 		int all_record = dao.raidAllRecord(raid_seq);
+		
 		
 		try {
 			response.setContentType("text/html; charset=UTF-8");
