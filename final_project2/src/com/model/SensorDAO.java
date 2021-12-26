@@ -49,6 +49,39 @@ public class SensorDAO {
 		}
 	}
 	
+	// 임시로  m_id = 'bang9', raid_seq = 12 로 대체 했음
+	// 레이드 어플라이어 테이블에 레코드 컬럼 업데이트 
+	public void updateRecord(String push_cnt, String pull_cnt, String sqt_cnt, String m_id, int raid_seq) { 
+
+		try {
+			connection();
+
+			String sql = "update t_raid_applier set applier_record = (select sum(applier_record+?) from t_raid_applier where m_id = ? and raid_seq = ?) where m_id = ? and raid_seq = ?";
+
+			pst = conn.prepareStatement(sql);
+			
+			pst.setString(1, pull_cnt);
+			pst.setString(2, m_id);
+			pst.setInt(3, raid_seq);
+			pst.setString(4, m_id);
+			pst.setInt(5, raid_seq);
+
+			cnt = pst.executeUpdate();
+			
+			if (cnt > 0) {
+				System.out.println("레이드 레코드 업데이트 성공");
+			} else {
+				System.out.println("레이드 레코드 업데이트(update 실패)");
+			}
+
+			
+		} catch (Exception e) {
+			System.out.println("DAO의 updateRecord() 실패(예외발생)");
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
 
 	
 	

@@ -38,6 +38,9 @@ public class GetSensor extends HttpServlet {
 		
 		String result = "";
 		
+		
+		
+		
 		// 시간까지 필요? 운동기록을 어떤 방식으로 저장할 건지.
 		// 총 개수만 뜨게 하면 된다.
 		// 그날 한 총 개수 // 타임모드의 최고기록
@@ -57,9 +60,18 @@ public class GetSensor extends HttpServlet {
 		
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		
-		// 임시로 serial 변수를 m_id = 'bang9'로 대체 했음
+		// 임시로 serial = "bang9"로 대체
 		serial = "bang9";
-		new SensorDAO().getSensor(push_cnt, pull_cnt, sqt_cnt, serial, time_mode);
+		
+		// 임시로  m_id = 'bang9', raid_seq = 12 로 대체 했음
+		String m_id = "bang9";
+		int raid_seq = 12;
+		
+		SensorDAO dao = new SensorDAO();
+		
+		
+		dao.getSensor(push_cnt, pull_cnt, sqt_cnt, serial, time_mode);
+		dao.updateRecord(push_cnt, pull_cnt, sqt_cnt, m_id, raid_seq);
 		
 		result = "push_cnt: " + push_cnt + ", pull_cnt: " + pull_cnt + ", sqt_cnt: " + sqt_cnt + ", time_mode: "
 				+ time_mode;
