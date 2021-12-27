@@ -51,7 +51,7 @@ public class SensorDAO {
 	
 	// 임시로  m_id = 'bang9', raid_seq = 12 로 대체 했음
 	// 레이드 어플라이어 테이블에 레코드 컬럼 업데이트 
-	public void updateRecord(String push_cnt, String pull_cnt, String sqt_cnt, String m_id, int raid_seq) { 
+	public void updateRecord(String push_cnt, String pull_cnt, String sqt_cnt, String m_id, int raid_seq) throws Exception { 
 
 		try {
 			connection();
@@ -78,6 +78,7 @@ public class SensorDAO {
 		} catch (Exception e) {
 			System.out.println("DAO의 updateRecord() 실패(예외발생)");
 			e.printStackTrace();
+			throw e;
 		} finally {
 			close();
 		}

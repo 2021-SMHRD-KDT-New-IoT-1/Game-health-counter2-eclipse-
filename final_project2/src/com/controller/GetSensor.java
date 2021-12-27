@@ -22,7 +22,8 @@ public class GetSensor extends HttpServlet {
 
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		try {			
+			
 		serverLog("GetSensor");
 		
 		request.setCharacterEncoding("UTF-8");
@@ -38,6 +39,8 @@ public class GetSensor extends HttpServlet {
 		
 		String result = "";
 		
+		String cnt ="";
+		
 		
 		
 		
@@ -51,10 +54,12 @@ public class GetSensor extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		serial = request.getParameter("serial");
-		pull_cnt = request.getParameter("push_cnt");
-		sqt_cnt = request.getParameter("pull_cnt");
-		push_cnt = request.getParameter("sqt_cnt");
-		time_mode = request.getParameter("time_mode");
+		push_cnt = request.getParameter("push_cnt");
+		pull_cnt = request.getParameter("pull_cnt");
+		sqt_cnt = request.getParameter("sqt_cnt");
+		time_mode = request.getParameter("mode");
+		cnt = request.getParameter("cnt");
+		
 		
 //		reg_date = request.getParameter("reg_date");
 		
@@ -66,22 +71,25 @@ public class GetSensor extends HttpServlet {
 		// 임시로  m_id = 'bang9', raid_seq = 12 로 대체 했음
 		String m_id = "bang9";
 		int raid_seq = 12;
-		
-		SensorDAO dao = new SensorDAO();
-		
-		
-		dao.getSensor(push_cnt, pull_cnt, sqt_cnt, serial, time_mode);
-		dao.updateRecord(push_cnt, pull_cnt, sqt_cnt, m_id, raid_seq);
-		
-		result = "push_cnt: " + push_cnt + ", pull_cnt: " + pull_cnt + ", sqt_cnt: " + sqt_cnt + ", time_mode: "
-				+ time_mode;
+				
+			SensorDAO dao = new SensorDAO();
+			
+			
+			dao.getSensor(push_cnt, pull_cnt, sqt_cnt, serial, time_mode);
+			dao.updateRecord(push_cnt, pull_cnt, sqt_cnt, m_id, raid_seq);
+			
+			result = "push_cnt: " + push_cnt + ", pull_cnt: " + pull_cnt + ", sqt_cnt: " + sqt_cnt + ", time_mode: "
+					+ time_mode+"cnt";
 
-		System.out.println(result);
-		
-		response.setContentType("text/html;charset=utf-8");
-//	    response.setCharacterEncoding("UTF-8");
-		response.getWriter().write("응답 성공");	
-		
+			System.out.println(result);
+			
+			response.setContentType("text/html;charset=utf-8");
+//		    response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("응답 성공");	
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e);
+		}				
 	}
 	
 	public void serverLog(String serverName) {
