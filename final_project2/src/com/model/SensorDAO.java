@@ -17,6 +17,7 @@ public class SensorDAO {
 	int cnt;
 	
 	// 임시로 serial 변수를 m_id = 'bang9'로 대체 했음
+	// 일반모드
 	public void getSensor(String push_cnt, String pull_cnt, String sqt_cnt, String serial, String time_mode) { 
 
 		try {
@@ -35,14 +36,45 @@ public class SensorDAO {
 			cnt = pst.executeUpdate();
 			
 			if (cnt > 0) {
-				System.out.println("센서값 DB에 저장 성공");
+				System.out.println("센서값(일반모드) DB에 저장 성공");
 			} else {
-				System.out.println("센서값 DB에 저장 실패(insert실패)");
+				System.out.println("센서값(일반모드) DB에 저장 실패(insert실패)");
 			}
 
 			
 		} catch (Exception e) {
-			System.out.println("DAO의 getSensor() 실패(예외발생)");
+			System.out.println("DAO의 getSensor()(일반모드) 실패(예외발생)");
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+	
+	// 타임어택 모드
+	public void getSensor(String time_cnt, String serial, String time_mode) { 
+
+		try {
+			connection();
+
+			String sql = "insert into t_athletic (timeattack_rec, M_ID, TIME_MODE) values(?, ?, ?)";
+
+			pst = conn.prepareStatement(sql);
+			
+			pst.setString(1, time_cnt);
+			pst.setString(2, serial);
+			pst.setString(3, time_mode);
+
+			cnt = pst.executeUpdate();
+			
+			if (cnt > 0) {
+				System.out.println("센서값(타임모드) DB에 저장 성공");
+			} else {
+				System.out.println("센서값(타임모드) DB에 저장 실패(insert실패)");
+			}
+
+			
+		} catch (Exception e) {
+			System.out.println("DAO의 getSensor()(타임모드) 실패(예외발생)");
 			e.printStackTrace();
 		} finally {
 			close();
